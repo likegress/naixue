@@ -1,8 +1,18 @@
 <template>
+    <div>
+		<NavMenu/>
+    </div>
 </template>
 
 <script>
+    import NavMenu from "@/components/navMenu/navMenu.vue"
+    export default {
+        components:{
+			NavMenu
+		}
+    }
 </script>
 
-<style>
+<style lang="scss" scoped>
+
 </style>
