@@ -1,0 +1,52 @@
+{
+
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"uniIdRouter": {},
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"tabBar": {
+		"color": "#999",
+		"selectedColor": "yellowgreen",
+		"list": [{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "./static/images/首页 (9).png",
+				"selectedIconPath": "./static/images/首页 (10).png"
+			},
+			{
+				"pagePath": "pages/meal/meal",
+				"text": "点餐",
+				"iconPath": "./static/images/杯.png",
+				"selectedIconPath": "./static/images/杯 (1).png"
+			},
+			{
+				"pagePath": "pages/shop/shop",
+				"text": "订单",
+				"iconPath": "./static/images/_订单集合.png",
+				"selectedIconPath": "./static/images/_订单集合 (1).png"
+			},
+			{
+				"pagePath": "pages/mine/mine",
+				"text": "我的",
+				"iconPath": "./static/images/我的-我的 (2).png",
+				"selectedIconPath": "./static/images/我的-我的 (3).png"
+			}
+		]
+	}
+
+
+}
