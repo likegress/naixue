@@ -10,7 +10,7 @@
 </template>
 
 <script>
-const app = getApp();
+
 export default {
   data() {
     return {
@@ -35,6 +35,8 @@ export default {
     this.height = height;
     this.top = top;
     this.left = gap * 2;
+	uni.setStorageSync("navHeight",height)
+	console.log(top);
     console.log(this.width, this.height, this.top, this.left);
     //#endif
   },

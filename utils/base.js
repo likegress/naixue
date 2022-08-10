@@ -1,5 +1,5 @@
 const request = (url, data = {}, method = "get") => {
-  let baseUrl = "http://localhost:3000/";
+  let baseUrl = "http://shop.datong0.com/api/wechat";
   return new Promise((resolve, reject) => {
     uni.request({
       url: baseUrl + url,
