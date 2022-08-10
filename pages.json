@@ -4,30 +4,26 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页",
-				"navigationStyle": "custom",
-				"backgroundColor": "#fff"
+				"navigationBarTitleText": "首页"
 			}
-		},{
+		},
+		{
 			"path": "pages/meal/meal",
 			"style": {
 				"navigationBarTitleText": "点餐",
-				"navigationStyle": "custom",
-				"backgroundColor": "#fff"
+				"navigationStyle": "custom"
 			}
-		},{
+		},
+		{
 			"path": "pages/shop/shop",
 			"style": {
-				"navigationBarTitleText": "订单",
-				"navigationStyle": "custom",
-				"backgroundColor": "#fff"
+				"navigationBarTitleText": "订单"
 			}
-		},{
+		},
+		{
 			"path": "pages/mine/mine",
 			"style": {
-				"navigationBarTitleText": "我的",
-				"navigationStyle": "custom",
-				"backgroundColor": "#fff"
+				"navigationBarTitleText": "我的"
 			}
 		}
 	],
