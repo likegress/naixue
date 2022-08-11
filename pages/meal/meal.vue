@@ -8,7 +8,7 @@
 					<text v-if="item.tag">{{ item.tag }}</text>
 				</view>
 			</scroll-view>
-			<scroll-view class="product_main" :scroll-into-view="'href' + hrefIndex" scroll-with-animation scroll-y>
+			<scroll-view class="product_main" @scroll="onScroll" :scroll-into-view="'href' + hrefIndex" scroll-with-animation scroll-y>
 				<view class="m-item" v-for="(item, index) in product" :key="item.id" :id="'href' + index">
 					<h5>{{ item.name }}</h5>
 					<view class="good" v-for="(subItem, subI) in item.products" :key="subItem.id">
@@ -32,7 +32,7 @@
 				<text>￥{{ price }}</text>
 				<text>共{{ totalNum }}个</text>
 			</view>
-			<view class="post">选好了</view>
+			<view class="post" @click="onShop">选好了</view>
 		</view>
 		<!-- 弹出层 -->
 		<u-popup class="u-popup" :round="10" mode="bottom" :show="isPopup" @close="close">
@@ -59,10 +59,13 @@ import noneStr from '@/utils/noneStr.js';
 
 //引入步进器
 import NumBox from '@/components/numBox/numBox.vue';
+//#ifdef MP-WEIXIN
+const scrollArr = [0];
+//#endif
 export default {
 	components: {
 		NavMenu,
-		NumBox,
+		NumBox
 	},
 	data() {
 		return {
@@ -77,35 +80,64 @@ export default {
 			totalNum: 0 //总数量
 		};
 	},
-	onLoad() {
-		this.getProduct();
-	},
-	onShow() {
-		//把高给变量navHeight
-		let height = uni.getStorageSync('navHeight');
-		this.navHeight = height;
+	onLoad() {},
+	onReady() {
+		this.getProduct().then(_ => {
+			//把高给变量navHeight
+			let height = uni.getStorageSync('navHeight');
+			this.navHeight = height;
+			//获取所有item元素的高
+			//#ifdef MP-WEIXIN
+			const query = uni
+				.createSelectorQuery()
+				.in(this)
+				.selectAll('.m-item');
+			query
+				.fields(
+					{
+						size: true
+					},
+					data => {
+						let height = 0;
+						data.forEach((item, i) => {
+							height += Math.ceil(item.height);
+							scrollArr.push(height);
+						});
+						console.log(scrollArr);
+					}
+				)
+				.exec();
+
+			//#endif
+		});
 	},
 	methods: {
+		//监听滚动
+		//#ifdef MP-WEIXIN
+		onScroll(e) {
+			let sT = Math.ceil(e.detail.scrollTop);
+
+			let i = scrollArr.findIndex((item, i, arr) => item >= sT && sT < arr[i + 1]);
+			this.current = i;
+		},
+		//#endif
 		//接收步进器的购物车
 		getCarts(carts) {
-		
 			this.carts = carts;
+			uni.setStorageSync("carts",this.carts);
 		},
 		getPrice(p) {
-	
 			this.price = p;
 		},
 		getTotalNum(n) {
-		
 			this.totalNum = n;
 		},
-		getGood(good){
+		getGood(good) {
 			this.product.forEach((item, i) => {
 				item.products.forEach((sItem, sI) => {
-					if(good.id == sItem.id){
-						item.products[sI] = good
+					if (good.id == sItem.id) {
+						item.products[sI] = good;
 					}
-					
 				});
 			});
 		},
@@ -121,6 +153,13 @@ export default {
 					this.$set(sItem, 'num', 1);
 				});
 			});
+			uni.setStorageSync("carts",this.carts);
+		},
+		//跳转到取餐页
+		onShop(){
+			uni.switchTab({
+				url:"/pages/shop/shop"
+			})
 		},
 		//请求数据
 		async getProduct() {
@@ -176,6 +215,7 @@ export default {
 				color: #fff;
 				font-size: 26rpx;
 			}
+			transition: all .4s;
 		}
 		.p-item.active {
 			background: #fff;
