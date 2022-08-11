@@ -35,7 +35,7 @@
 				</view>
 			</view>
 			<view class="tuijian">
-				<view v-for="item in list">
+				<view v-for="(item,index) in list" :key="index">
 					<p class="tj_title">{{item.title}}</p>
 					<p class="subtitle">{{item.subtitle}}</p>
 					<image :src="item.img" mode="" class="tj_img"></image>
@@ -53,7 +53,7 @@
 					</view>
 				</view>
 				<view class="zr_content">
-					<view v-for="item in list2">
+					<view v-for="(item,index) in list2" :key="index">
 						<image :src="item.img" mode="" class="zr_img"></image>
 						<p class="zr_title">{{item.title}}</p>
 						<p class="price">￥{{item.price}}</p>
