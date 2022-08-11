@@ -65,8 +65,7 @@ export default {
 					disabled: false
 				}
 			],
-			payWX: '微信支付',
-			
+			payWX: '微信支付'
 		};
 	},
 	onLoad() {},
@@ -76,37 +75,48 @@ export default {
 		this.carts = carts;
 	},
 	methods: {
+		//#ifdef MP-WEIXIN
 		//信息提交请求接口
-		async save() {
-			// console.log(this.phone,this.carts.length);
+		save() {
 			if (!this.phone || this.carts.length == 0) {
 				uni.showToast({
 					title: '请填写电话号码和购物'
 				});
 				return;
 			}
-			const object = this.carts.reduce((pre, item, i) => {
-				let obj = {};
-				obj.id = item.id
-				obj.count = item.num;
-				pre.push(obj);
-				return pre
-			}, []);
-	
-			const res = await request(
+
+			request(
 				'/order',
 				{
 					phone: this.phone,
 					meal_time: '立即取餐',
 					meal_type: this.radiovalue1,
-					products: object,
+					products: this.carts.map(item => ({
+						id: item.id,
+						count: item.num
+					})),
 					pay_type: this.payWX,
-					desc:"小把菜"
+					desc: '小把菜'
 				},
 				'POST'
-			);
-			// console.log(this.phone,this.radiovalue1,object,this.payWX);
-			console.log(res);
+			).then(({ data }) => {
+				console.log(data);
+				uni.requestPayment({
+				    provider: 'wxpay',
+					timeStamp: String(Date.now()),
+					nonceStr: 'A1B2C3D4E5',
+					package: 'prepay_id=wx33666ccfad9a2260 ',
+					signType: 'MD5',
+					paySign: '',
+					success: function (res) {
+						console.log('success:' + JSON.stringify(res));
+					},
+					fail: function (err) {
+						console.log('fail:' + JSON.stringify(err));
+					}
+				});
+			});
+			//#endif
 		},
 		// 单选框radio按钮
 		groupChange(val) {
